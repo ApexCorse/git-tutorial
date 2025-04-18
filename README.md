@@ -9,7 +9,10 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
   - [Introduzione](#introduzione)
   - [Git](#git)
     - [Come funziona](#come-funziona)
+    - [Creare una repository](#creare-una-repository)
     - [Fare cambiamenti](#fare-cambiamenti)
+    - [Eseguire un commit](#eseguire-un-commit)
+    - [Ispezionare la cronologia](#ispezionare-la-cronologia)
 
 ## Introduzione
 
@@ -21,6 +24,8 @@ Quindi, lo strumento con cui si lavora è semplicemente Git, mentre Github perme
 
 ## Git
 
+Git si può usare da terminale o anche attraverso uno strumento come Github Desktop.
+
 ### Come funziona
 
 Git mantiene una cronologia completa e versionata di tutte le modifiche al progetto attraverso una struttura di dati con **commit** collegati. Invece di memorizzare versioni complete dei file ad ogni salvataggio, Git acquisisce "snapshot" incrementali. Ogni commit rappresenta lo stato del progetto in un momento specifico e contiene un riferimento al commit precedente, stabilendo una cronologia collegata e ordinata. Si può pensare a un commit come un pallino di una serie che contiene solo ciò che differisce dal pallino precedente.
@@ -29,4 +34,12 @@ Git mantiene una cronologia completa e versionata di tutte le modifiche al proge
 
 Git permette di organizzare questi commit in più rami separati, in modo da permettere la coesistenza allo stesso tempo di cronologie diverse senza conflitti. Di base c'è un solo ramo, che è anche quello principale, il `main`. Il `main` deve contenere solamente la versione stabile dei file, ogni sperimentazione o nuova feature andrebbe sviluppata su un altro ramo o branch. A questo ci arriveremo dopo.
 
+### Creare una repository
+
 ### Fare cambiamenti
+
+Ogni volta che si effettuano delle modifiche ai file, questi cambiamenti vengono riconosciuti da Git, 
+
+### Eseguire un commit
+
+### Ispezionare la cronologia
