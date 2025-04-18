@@ -76,6 +76,7 @@ Ad esempio creiamo un file chiamato `foo.txt`, scrivendo all'interno di questo f
 ![](assets/1.4.png)
 
 Notiamo varie cose:
+
 - Git ci dice che ci troviamo sul `main` branch.
 - Non abbiamo ancora fatto commit, la cronologia è vuota.
 - Git ha riconosciuto un file di cui non tiene ancora traccia, proprio `foo.txt`
@@ -87,9 +88,9 @@ L'equivalente su Github Desktop sarebbe semplicemente la sezione **Changes** sul
 
 Vediamo infatti che il file `foo.txt` si trova tra i "cambiamenti" all'interno della repo e sulla destra vediamo il nuovo contenuto evidenziato in verde.
 
-Per quanto riguarda `git add`, in verità utilizzeremo questo comando non solo per aggiungere nuovi file alla cosiddetta *staging area*, ovvero a quell'insieme di file di cui vogliamo committare le modifiche, ma anche per aggiungere a quest'ultima file modificati ed eliminati, come vedremo dopo.
+Per quanto riguarda `git add`, in verità utilizzeremo questo comando non solo per aggiungere nuovi file alla cosiddetta _staging area_, ovvero a quell'insieme di file di cui vogliamo committare le modifiche, ma anche per aggiungere a quest'ultima file modificati ed eliminati, come vedremo dopo.
 
-Aggiungiamo quindi questo file alla *staging area* con `git add`, a cui dobbiamo specificare il percorso relativo del file da dove ci troviamo nel terminale. Se ci troviamo nel percorso base della repo:
+Aggiungiamo quindi questo file alla _staging area_ con `git add`, a cui dobbiamo specificare il percorso relativo del file da dove ci troviamo nel terminale. Se ci troviamo nel percorso base della repo:
 
 ```bash
 git add foo.txt
@@ -101,11 +102,11 @@ Una volta eseguito questo comando vediamo l'output di `git status`.
 
 ![](assets/1.6.png)
 
-Vediamo che adesso il file si trova tra i *changes to be committed*, pronto quindi per essere committato. Più avanti vedremo anche come rimuoverlo dalla *staging area*, in caso non si volesse darlo a Git per tenerne traccia.
+Vediamo che adesso il file si trova tra i _changes to be committed_, pronto quindi per essere committato. Più avanti vedremo anche come rimuoverlo dalla _staging area_, in caso non si volesse darlo a Git per tenerne traccia.
 
 ### Eseguire un commit
 
-Adesso però è il momento di fare il nostro primo commit e quindi di aggiungere il primo pallino all'interno della nostra cronologia. Il comando da terminale è ovviamente `git commit`, il quale prenderà tutti i nuovi file, quelli eliminati e quelli modificati all'interno della *staging area*, ovvero quelli su cui si è eseguito `git add` oppure quelli spuntati su Github Desktop (cosa che funziona solo se si committa da Github Desktop), e crea un nuovo nodo nella cronologia.
+Adesso però è il momento di fare il nostro primo commit e quindi di aggiungere il primo pallino all'interno della nostra cronologia. Il comando da terminale è ovviamente `git commit`, il quale prenderà tutti i nuovi file, quelli eliminati e quelli modificati all'interno della _staging area_, ovvero quelli su cui si è eseguito `git add` oppure quelli spuntati su Github Desktop (cosa che funziona solo se si committa da Github Desktop), e crea un nuovo nodo nella cronologia.
 
 Questo comando necessita obbligatoriamente di un messaggio che identifichi il commit. Idealmente questo commit deve riassumere i cambiamenti che questo commit apporta, deve essere esplicativo ma anche sintetico. Possono esistere due o più commit con lo stesso messaggio tuttavia. Per esempio:
 
@@ -116,7 +117,7 @@ git commit -m "Primo commit"
 La flag `-m` ci permette di specificare il messaggio del commit tra virgolette. Inoltre, se si volessero aggiungere spiegazioni aggiuntive (consigliato), si può anche inserire una descrizione del commit, aggiungendo un altro messaggio con `-m`:
 
 ```bash
-git commit -m "Primo commit" -m "Aggiunto 'foo.txt'" 
+git commit -m "Primo commit" -m "Aggiunto 'foo.txt'"
 # Non si possono usare le doppie virgolette all'interno di altre doppie virgolette!!!
 ```
 
@@ -128,7 +129,46 @@ Dopo il commit si può notare, sia tramite `git status` che tramite l'interfacci
 
 ### Fare cambiamenti
 
-Ogni volta che si effettuano delle modifiche ai file, questi cambiamenti vengono riconosciuti da Git, 
+Ogni volta che si effettuano delle modifiche ai file, queste vengono riconosciute da Git, che aggiunge questi cambiamenti tra quelli che si possono aggiungere alla _staging area_. Proviamo a modificare il file `foo.txt` modificando la riga già presente e aggiungendone un'altra. Questo è quello che alla fine sarà all'interno di `foo.txt`
+
+```text
+Apex1
+Apex2
+```
+
+Adesso che il file è stato modificato, vediamo l'output di `git status` dal terminale (sempre trovandoci nella cartella della repo):
+
+![](assets/1.8.png)
+
+Su Github Desktop vediamo invece questo:
+
+![](assets/1.10.png)
+
+a destra notiamo anche i cambiamenti che Git ha rilevato. Notiamo che, secondo Git, è stata eliminata la riga che conteneva "Hello World" per aggiungere poi le altre due.
+
+Ritornando all'output di `git status`, ci dice, giustamente, che il file `foo.txt` è stato modificato. Ci dice anche che si può tornare al file originale tramite il comando `git restore`. Infatti, se eseguissimo il comando:
+
+```bash
+git restore foo.txt
+```
+
+L'output di `git status` diventa:
+
+![](assets/1.9.png)
+
+e andando a vedere il contenuto di `foo.txt`:
+
+```text
+Hello World!
+```
+
+mentre su Github Desktop non vediamo nessuna entry nei cambiamenti.
+
+Come nel caso di aggiunzione dei file, anche le modifiche ai file si aggiungono alla _staging area_ tramite `git add` per poi eseguire il `git commit`, oppure semplicemente tramite Github Desktop selezionando i file da voler committare e poi eseguendo il commit.
+
+> ❕**Curiosità**
+>
+> Da notare anche che, su Github Desktop, nella sezione dei cambiamenti un file aggiunto ha un'icona verde, mentre un file modificato ha un'icona gialla. Vedremo che un file eliminato ha un'icona rossa.
 
 ### Eliminare files
 
