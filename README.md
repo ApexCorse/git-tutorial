@@ -15,6 +15,7 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
     - [Eseguire un commit](#eseguire-un-commit)
     - [Fare cambiamenti](#fare-cambiamenti)
     - [Eliminare files](#eliminare-files)
+    - [Ripristinare files](#ripristinare-files)
     - [Ispezionare la cronologia](#ispezionare-la-cronologia)
 
 ## Introduzione
@@ -166,10 +167,68 @@ mentre su Github Desktop non vediamo nessuna entry nei cambiamenti.
 
 Come nel caso di aggiunzione dei file, anche le modifiche ai file si aggiungono alla _staging area_ tramite `git add` per poi eseguire il `git commit`, oppure semplicemente tramite Github Desktop selezionando i file da voler committare e poi eseguendo il commit.
 
-> ❕**Curiosità**
+> ⭐ **Curiosità**
 >
 > Da notare anche che, su Github Desktop, nella sezione dei cambiamenti un file aggiunto ha un'icona verde, mentre un file modificato ha un'icona gialla. Vedremo che un file eliminato ha un'icona rossa.
 
 ### Eliminare files
+
+Git rileva anche le eliminazioni di file: dal commit in poi, il file non sarà più all'interno della cronologia.
+
+> ❗ **Attenzione**
+>
+> Anche se dopo il commit non vedremo più il file nella nostra cartella, questo non vuol dire che sia stato cancellato completamente dalla cronologia: tornando a un commit precedente da quello in cui il file è stato eliminato, troveremo il file in questione!
+
+Proviamo quindi ad eliminare il file `foo.txt`. L'output di `git status` è:
+
+![](assets/1.11.png)
+
+mentre su Github Desktop vediamo questo:
+
+![](assets/1.12.png)
+
+Se eseguissimo il commit, il file non sarà più presente da qui in avanti.
+
+### Ripristinare files
+
+Git ci da pure l'opportunità di riprstinare i file che abbiamo modificato o eliminato, in modo da tornare sui nostri passi prima di fare un commit.
+
+Ad esempio, l'ultima cosa che abbiamo fatto è stato eliminare il file `foo.txt`. Se volessimo recuperarlo dovremmo, usualmente, andare nel cestino del nostro computer e recuperare manualmente il file. Tuttavia, Git ci offre un comando apposito: `git restore`. Eseguendo il comando:
+
+```bash
+git restore foo.txt
+```
+
+Vedremo, tramite `git status`, che Git non rileva più cambiamenti nella nostra cartella, e che il file `foo.txt` è tornato al suo posto.
+
+Su Github Desktop basterebbe cliccare col tasto destro sul file che vogliamo ripristinare e selezionare la voce **Discard Changes**.
+
+![](assets/1.13.png)
+
+La stessa cosa funziona se proviamo a modificare il file `foo.txt`: infatti, premettendo di riavere il file nella cartella, non eliminato, aggiungiamo la riga:
+
+```text
+Apex3
+```
+
+Vediamo, sia tramite `git status` che tramite l'interfaccia di Github Desktop, che Git ha rilevato un cambiamento al file. Tramite `git restore`, o la voce **Discard Changes** di Github Desktop, possiamo ripristinare il file a com'era prima della modifica.
+
+Se invece avessimo aggiunto un file modificato o eliminato alla *staging area* (cosa possibile solamente tramite il terminale e il comando `git add`, su Github Desktop non si esegue questo comando manualmente), per ripristinare i cambiamenti non basterebbe usare `git restore`, ma una sua variante.
+
+Infatti, una volta aggiunto questo file alla *staging area*, vediamo che l'output di `git status` è il seguente:
+
+![](assets/1.14.png)
+
+Ci dice che per togliere il file dalla *staging area* ("*unstage*") dobbiamo eseguire il comando `git restore --staged` più il percorso del file. Quindi eseguendo:
+
+```bash
+git restore --staged foo.txt
+```
+
+l'output di `git status` sarà:
+
+![](assets/1.15.png)
+
+Quindi ha semplicemente tolto `foo.txt` dalla *staging area*.
 
 ### Ispezionare la cronologia
