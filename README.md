@@ -17,6 +17,7 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
     - [Eliminare files](#eliminare-files)
     - [Ripristinare files](#ripristinare-files)
     - [Ispezionare la cronologia](#ispezionare-la-cronologia)
+    - [Navigare nella cronologia](#navigare-nella-cronologia)
 
 ## Introduzione
 
@@ -232,3 +233,62 @@ l'output di `git status` sarà:
 Quindi ha semplicemente tolto `foo.txt` dalla *staging area*.
 
 ### Ispezionare la cronologia
+
+Git ci permette di ispezionare la cronologia sul branch in cui siamo, banalmente il `main` se è l'unico branch che abbiamo, tramite il comando `git log` da terminale. Questo mostrerà tutti i commit eseguiti fino ad ora.
+
+Ad esempio, eseguendo il comando `git log` sulla repo usata fino ad ora vedremo una cosa del genere:
+
+![](assets/1.16.png)
+
+ovvero vedremo questa lista di commit che vanno dal più nuovo al più vecchio. Vediamo varie informazioni riguardo ogni commit:
+
+- Il tag, ovvero l'identificativo del commit. Ci servirà in seguito per navigare tra i commit.
+- L'autore del commit.
+- La data in cui è stato creato.
+- Il messaggio e in caso la descrizione del commit.
+
+Il commit in cui ci troviamo attualmente è segnato dalla parola `HEAD`. Vedremo che potremo spostare questo indicatore dove vogliamo quando navigheremo nella cronologia.
+
+Su Github Desktop il discorso è più semplice perché basta passare sulla tab **History** che si vede accanto a **Changes**. In questa vedremo proprio la storia dei commit.
+
+![](assets/1.17.png)
+
+Inoltre, `git log` permette di essere eseguito con delle variazioni, con le cosiddette *flags*, ovvero delle opzioni che si possono specificare per ottenere degli output diversi. Ad esempio, si può fare in modo che `git log` mostri un grafico ad accompagnare i commit, cosa che sarà molto utile quando avremo più branch, tramite il seguente comando:
+
+```bash
+git log --graph
+```
+
+che da il seguente output:
+
+![](assets/1.18.png)
+
+Vediamo che viene disegnata quella linea rossa a sinistra dei commit che, nel caso di più branch, andrebbe a formare un vero e proprio grafico che ci permetterebbe di capire come si intrecciano i branch con i loro commit. Approfondiremo più in avanti.
+
+### Navigare nella cronologia
+
+Una delle cose più utili che si può fare con Git è quello di tornare indietro sui propri passi, come una sorta di CTRL + Z con gli steroidi, e tutto questo senza eliminare i progressi fatti fino al momento corrente.
+
+Il comando che permette di fare una cosa del genere è `git checkout`. Questo comando ci permette, specificando un tag di un commit, ovvero il tag dato dall'output di `git log`, di spostare l'`HEAD` corrente, e quindi di far sì che il contenuto della nostra cartella rifletta il contenuto al tempo di quello specifico commit.
+
+Facciamo una prova: dato l'output del `git log` della sezione precedente, vogliamo ritornare al secondo commit della cronologia. Basta eseguire `git checkout` più il tag del commit in questione:
+
+```bash
+git checkout 3a9aee583a268caae9d0df93286ae611c3f34048
+```
+
+Una volta eseguito questo comando, vedremo che il contenuto di `foo.txt` non è più quello aggiornato nell'ultimo commit salvato, ma che sia quello risalente al commit dove ci troviamo adesso.
+
+Notiamo anche che nell'output generato dal comando `git checkout` appena eseguito, Git ci avvisa:
+
+```text
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+```
+
+In pratica ci dice che possiamo fare quello che vogliamo mentre siamo in questo stato di *detached `HEAD`*, ovvero fare cambiamenti e committare, ma che una volta ritornati ad esempio all'ultimo commit del `main`, ovvero quando usciremo da questo stato, tutto il lavoro fatto non verrà salvato. Per fare in modo che questi cambiamenti vengano salvati bisogna creare un altro branch: vedremo più in avanti come fare.
+
+Da Github Desktop è più facile fare ciò: basta andare nella tab **History**, cliccare col tasto destro su un commit e selezionare **Checkout Commit**.
+
+![](assets/1.19.png)
