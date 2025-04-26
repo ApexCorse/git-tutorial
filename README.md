@@ -10,15 +10,37 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
 - [Git](#git)
   - [Come funziona](#come-funziona)
   - [Creare una repository](#creare-una-repository)
-  - [Lavorare con Git](#lavorare-con-git)
+  - [Aggiungere, modificare, eliminare](#aggiungere-modificare-eliminare)
     - [Aggiungere file](#aggiungere-file)
     - [Eseguire un commit](#eseguire-un-commit)
     - [Fare cambiamenti](#fare-cambiamenti)
     - [Eliminare files](#eliminare-files)
     - [Ripristinare files](#ripristinare-files)
+  - [Sfruttare la cronologia](#sfruttare-la-cronologia)
     - [Ispezionare la cronologia](#ispezionare-la-cronologia)
     - [Navigare nella cronologia](#navigare-nella-cronologia)
-
+    - [Ritornare a un commit (e cancellare quelli successivi)](#ritornare-a-un-commit-e-cancellare-quelli-successivi)
+  - [Lavorare con i *branch*](#lavorare-con-i-branch)
+    - [Come funzionano i branch](#come-funzionano-i-branch)
+    - [Creare un branch](#creare-un-branch)
+    - [Eseguire commit su un branch](#eseguire-commit-su-un-branch)
+    - [Passare da un branch all'altro](#passare-da-un-branch-allaltro)
+    - [Rinominare un branch](#rinominare-un-branch)
+    - [Eliminare un branch](#eliminare-un-branch)
+    - [Unire due branch](#unire-due-branch)
+      - [`git branch`](#git-branch)
+      - [`git rebase`](#git-rebase)
+      - [Scegliere tra un `merge` e un `rebase`](#scegliere-tra-un-merge-e-un-rebase)
+  - [Github](#github)
+    - [Collegare una repo](#collegare-una-repo)
+    - [Clonare una repo](#clonare-una-repo)
+    - [Operazioni in remoto](#operazioni-in-remoto)
+      - [`git push`](#git-push)
+      - [`git fetch`](#git-fetch)
+      - [`git pull`](#git-pull)
+    - [Mantenere l'ordine](#mantenere-lordine)
+      - [Divisione in più branch](#divisione-in-più-branch)
+      - [Pull Requests](#pull-requests)
 ## Introduzione
 
 **Git** è un sistema di controllo versione distribuito open source che tiene traccia delle modifiche apportate ai file nel tempo. Consente di tornare a versioni specifiche, confrontare le modifiche, collaborare con altri e altro ancora. Permette quindi di mantenere una cronologia dei cambiamenti ai file di cui si tiene traccia e offre le basi per la collaborazione con altre persone.
@@ -67,7 +89,7 @@ Comparirà una schermata del tipo:
 
 in cui vanno inseriti il nome della repo che si vuole creare, la descrizione (opzionale) e il percorso in cui creare la cartella in locale. Le altre opzioni le vedremo in seguito.
 
-## Lavorare con Git
+## Aggiungere, modificare, eliminare
 
 ### Aggiungere file
 
@@ -232,6 +254,8 @@ l'output di `git status` sarà:
 
 Quindi ha semplicemente tolto `foo.txt` dalla *staging area*.
 
+## Sfruttare la cronologia
+
 ### Ispezionare la cronologia
 
 Git ci permette di ispezionare la cronologia sul branch in cui siamo, banalmente il `main` se è l'unico branch che abbiamo, tramite il comando `git log` da terminale. Questo mostrerà tutti i commit eseguiti fino ad ora.
@@ -292,3 +316,73 @@ In pratica ci dice che possiamo fare quello che vogliamo mentre siamo in questo 
 Da Github Desktop è più facile fare ciò: basta andare nella tab **History**, cliccare col tasto destro su un commit e selezionare **Checkout Commit**.
 
 ![](assets/1.19.png)
+
+### Ritornare a un commit (e cancellare quelli successivi)
+
+Possiamo anche resettare la cronologia a un certo commit, ovvero far diventare quel commit il corrente e cancellare tutti quelli dopo. Il comando è `git reset`, che quindi eseguito su un commit farà puntare l'`HEAD` a quel determinato commit cancellando tutti i commit che sono stati creati dopo quello.
+
+Tuttavia non si vanno a perdere le modifiche fatte in questi commit cancellati, le quali rimarranno nella nostra cartella, al di fuori della *staging area*.
+
+Data la seguente cronologia:
+
+![](assets/1.18.png)
+
+se si esegue il comando:
+
+```bash
+git reset 3a9aee583a268caae9d0df93286ae611c3f34048
+```
+
+succederà che l'ultimo commit della nostra cronologia verrà cancellato e l'`HEAD` punterà a questo commit su cui abbiamo eseguito il reset. Infatti, l'output di `git log` è:
+
+![](assets/1.20.png)
+
+Vediamo infatti che manca il commit che precedentemente era l'ultimo creato. Eseguendo anche `git status`, vediamo che abbiamo le modifiche al file `foo.txt` che erano state committate nel commit ormai eliminato. 
+
+(Consiglio di ricreare il commit sempre con queste modifiche).
+
+La stessa cosa si può fare ovviamente da Github Desktop, cliccando col tasto destro sul commit in questione e selezionando **Reset to commit**.
+
+![](assets/1.21.png)
+
+## Lavorare con i *branch*
+
+### Come funzionano i branch
+
+### Creare un branch
+
+### Eseguire commit su un branch
+
+### Passare da un branch all'altro
+
+### Rinominare un branch
+
+### Eliminare un branch
+
+### Unire due branch
+
+#### `git branch`
+
+#### `git rebase`
+
+#### Scegliere tra un `merge` e un `rebase`
+
+## Github
+
+### Collegare una repo
+
+### Clonare una repo
+
+### Operazioni in remoto
+
+#### `git push`
+
+#### `git fetch`
+
+#### `git pull`
+
+### Mantenere l'ordine
+
+#### Divisione in più branch
+
+#### Pull Requests
