@@ -347,7 +347,30 @@ La stessa cosa si può fare ovviamente da Github Desktop, cliccando col tasto de
 
 ## Lavorare con i *branch*
 
+I *branch* sono una delle feature più importanti di Git, che permette di organizzare meglio il proprio lavoro e di facilitare la collaborazione. Idealmente una repo, soprattutto se vede lavorare più persone al suo interno, dovrebbe sempre sfruttare i branch.
+
 ### Come funzionano i branch
+
+Facciamo un'esempio: abbiamo una repo che contiene file relativi a vari componenti della macchina e supponiamo di stare lavorando sull'alettone. Avendolo già sviluppato fino a un certo punto, avremo dei commit che contengono le modifiche fatte nel tempo.
+
+![](assets/1.22.png)
+*La freccia indica il commit che è venuto prima*
+
+Supponiamo tuttavia di voler provare un approccio diverso nello sviluppo, di fare un esperimento che, per motivi ovvi, non si vuole mantenere nel `main`, siccome lì si trova la versione corrente che non si vuole perdere.
+
+Quello che dobbiamo fare è proprio creare un altro branch, in questo caso chiamato `esperimento-alettone`. Quello che succede è questo:
+
+![](assets/1.23.png)
+
+Succede che viene creato un vero e proprio ramo, che contiene gli stessi commit del `main` (in particolare questi non vengono duplicati, ma vengono creati dei "riferimenti" a questi commit che appartengono al nuovo branch). Se creassimo un commit in questo ramo, alla cronologia succederebbe una cosa del genere:
+
+![](assets/1.24.png)
+
+Il nuovo commit viene creato solo nel branch `esperimento-alettone`, il `main` non viene assolutamente intaccato. Questo ha molti vantaggi:
+
+- possiamo lavorare su `esperimento-alettone` senza preoccuparci di quello che succede nel `main`;
+- possiamo tornare nel `main` quando vogliamo;
+- se nel nostro caso il lavoro eseguito sul branch alternativo è valido, si possono portare i progressi di questo nel `main`.
 
 ### Creare un branch
 
