@@ -374,6 +374,49 @@ Il nuovo commit viene creato solo nel branch `esperimento-alettone`, il `main` n
 
 ### Creare un branch
 
+Innanzitutto, un branch si può creare non solo all'ultimo commit del `main`, ma a partire da qualsiasi commit, esso sia del `main` branch oppure di un altro branch. Infatti, quando creiamo il branch questo si diramerà a partire dal commit in cui ci trovavamo.
+
+Per creare un branch basta eseguire il comando `git branch` seguito dal nome che si vuole dare al branch. Supponendo di ritrovarci sempre nella nostra repo di prova, eseguendo il comando seguente:
+
+```bash
+git branch branch-1
+```
+
+verrà creato un nuovo branch, ed eseguendo il comando `git log` vedremo questo:
+
+![](assets/1.25.png)
+
+Ci trovavamo sull'ultimo commit del `main` branch ed è stato creato un nuovo branch `branch-1` a partire da questo commit. I due branch, `main` e `branch-1`, condividono per il momento tutti i commit.
+
+> ❗
+> 
+> Da notare che non ci siamo spostati sul nuovo branch, l'`HEAD` punta ancora all'ultimo commit su cui eravamo prima, ma sempre puntando al `main` branch. Vedremo dopo come passare da un branch all'altro.
+
+Possiamo anche spostarci a un altro commit e poi creare un branch. Se volessimo creare il branch `branch-2` a partire dal penultimo commit del `main`, eseguiamo i comandi seguenti:
+
+```bash
+git checkout HEAD~1
+git branch branch-2
+```
+
+Il primo comando ci fa tornare indietro di un commit rispetto all'`HEAD`, un modo alternativo per evitare di copiare e incollare l'intero tag del commit. Poi creiamo il branch. L'output di `git log --all` (per mostrare tutti i branch) adesso sarà:
+
+![](assets/1.26.png)
+
+> ℹ️
+>
+> Da notare che l'`HEAD` adesso si trova al penultimo commit della cronologia.
+
+> ➕
+>
+> Una cosa che possiamo fare per rendere la cronologia più comprensibile è dire a Git di mostrare un grafico che mostri la relazione tra i vari branch, aggiungendo la flag `--graph`. L'output di `git log --all --graph` è il seguente:
+> 
+> ![](assets/1.27.png)
+
+Su Github Desktop la questione si fa più semplice, in quanto per creare un branch a partire da un commit ci basta cliccare col tasto destro su un commit e poi selezionare **Create Branch from Commit**.
+
+![](assets/1.28.png)
+
 ### Eseguire commit su un branch
 
 ### Passare da un branch all'altro
