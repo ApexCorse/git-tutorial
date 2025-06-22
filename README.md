@@ -23,12 +23,12 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
   - [Lavorare con i *branch*](#lavorare-con-i-branch)
     - [Come funzionano i branch](#come-funzionano-i-branch)
     - [Creare un branch](#creare-un-branch)
-    - [Eseguire commit su un branch](#eseguire-commit-su-un-branch)
     - [Passare da un branch all'altro](#passare-da-un-branch-allaltro)
+    - [Eseguire commit su un branch](#eseguire-commit-su-un-branch)
     - [Rinominare un branch](#rinominare-un-branch)
     - [Eliminare un branch](#eliminare-un-branch)
     - [Unire due branch](#unire-due-branch)
-      - [`git branch`](#git-branch)
+      - [`git merge`](#git-merge)
       - [`git rebase`](#git-rebase)
       - [Scegliere tra un `merge` e un `rebase`](#scegliere-tra-un-merge-e-un-rebase)
   - [Github](#github)
@@ -417,17 +417,105 @@ Su Github Desktop la questione si fa più semplice, in quanto per creare un bran
 
 ![](assets/1.28.png)
 
+### Passare da un branch all'altro
+
+Per muoverci tra i branch esistenti nella nostra repo, possiamo scegliere tra due comandi diversi, ovvero `git switch`, più nuovo e consigliato per eseguire questa operazione, e `git checkout`, già visto per muoversi tra i commit.
+
+Infatti `git checkout` è molto più potente di `git switch`, tuttavia se l'intento è solamente cambiare branch, allora è meglio usare `git switch`, sostanzialmente si evita di incappare in problemi.
+
+Quindi, data la cronologia seguente, in cui ci troviamo nel `main` branch:
+
+![](assets/1.29.png)
+
+per passare al branch `branch-2`, basta eseguire il seguente comando:
+
+```bash
+git switch branch-2
+```
+
+E in questo modo ci troveremo proprio su `branch-2`. Infatti, l'output di `git log` adesso sarà:
+
+![](assets/1.30.png)
+
+> 🗣️
+>
+> Non vediamo l'ultimo commit proprio perché non appartiene a `branch-2`, in quanto esclusiva, nel nostro caso, di `main` e `branch-1`, e `git log` base non ci permette di vedere commit che sono di branch che stanno "davanti" al branch corrente.
+
+Per ritornare nel `main` basta ovviamente eseguire lo stesso comando ma con `main` come argomento, oppure semplicemente:
+
+```bash
+git switch -
+```
+
+Il trattino indica proprio il `main` branch.
+
+Su Github Desktop l'operazione è molto più semplice: infatti basta scegliere il branch in cui si vuole andare dal menù a tendina che compare nella barra superiore:
+
+![](assets/1.31.png)
+
+> ⛔
+>
+> Quando si hanno dei cambiamenti non committati e si cambia branch, questi verranno portati nel branch in cui si sta andando, quindi bisogna fare molta attenzione a casi del genere (soprattutto se non si è consapevoli del problema).
+> 
+> Per fortuna, Github Desktop ci viene incontro e in situazioni del genere ci chiede se vogliamo portare i cambiamenti con noi sul branch in cui stiamo andando oppure lasciarli nel branch dove si trovano (grazie a un'operazione che vedremo in seguito). Infatti ci viene mostrato questo dialog:
+> 
+> ![](assets/1.32.png)
+>
+> che ci chiede se vogliamo tenere o portare i cambiamenti con noi.
+
 ### Eseguire commit su un branch
 
-### Passare da un branch all'altro
+Ovviamente, si possono eseguire dei commit su branch diversi dal `main`, basta essere sul branch in questione e creare un commit. Supponendo di essere sul `branch-2`, aggiungiamo questa riga al file `foo.txt`:
+
+```text
+Apex4
+```
+
+e creiamo un nuovo commit. Adesso, l'output di `git log --all --graph` sarà il seguente:
+
+![](assets/1.33.png)
+
+Quello che vediamo è quindi una diramazione evidente della cronologia:
+
+- La cronologia è identica fino al secondo commit, dove il grafo è di colore verde. Questo infatti vuol dire che tutti i branch condividono quei commit.
+- Dal secondo in poi si ha una diramazione: entrambi `main` e `branch-1` possiedono un commit che `branch-2` non ha, e viceversa.
+
+> ☝️
+>
+> Prima di questo nuovo commit su `branch-2`, la cronologia ci appariva come lineare, perché `branch-2` era semplicemente un "sottoinsieme" di `main` e `branch-1`. L'unica cosa che contraddistingueva questi ultimi due da `branch-2` era la presenza di un commit in più, non c'erano commit di `branch-2` che non fossero anche degli altri 2.
+
+> 🔥
+>
+> Proprio il fatto di poter creare dei commit su branch diversi permette la collaborazione di tante persone su una stessa repository. Infatti, pensando il `main` come branch di "produzione", ovvero in cui si hanno tutti i progressi accettati come buoni, ogni sotto-reparto con i suoi membri può lavorare nel suo branch a parte, fregandosene di quello che fanno gli altri sotto-reparti e senza quindi dover stare attenti a pullare prima di pushare o cose del genere.
 
 ### Rinominare un branch
 
+A volte può essere utile rinominare un branch, cosa che si fa tramite il comando `git branch -m`. Questo comando accetta il nuovo nome del branch da rinominare, che di default è il branch corrente. Se si vuole rinominare un branch diverso da quello corrente, si deve passare il nome di questo branch prima del nuovo nome.
+
+Quindi adesso rinominiamo `branch-2` in `branch-3` e facciamo la stessa cosa all'inverso per non scombinare le cose.
+
+```bash
+git branch -m branch-3          # supponendo di trovarsi nel branch-2
+git branch -m branch-3 branch-2 # ho passato il nome del branch da rinominare solo a scopo dimostrativo
+```
+
+Su Github Desktop basta fare tasto destro sul menù a tendina sulla barra superiore e cliccare su **Rename**.
+
+![](assets/1.34.png)
+
 ### Eliminare un branch
+
+Per eliminare un branch basta eseguire il comando `git branch -D` + il nome del branch.
+
+> ❗
+>
+> Bisogna essere su un branch diverso da quello che si vuole eliminare per eseguire il comando.
+>
+> Inoltre, si ricordi che i cambiamenti eseguiti sul branch una volta eliminato non saranno più recuperabili.
 
 ### Unire due branch
 
-#### `git branch`
+#### `git merge`
 
 #### `git rebase`
 
