@@ -31,6 +31,7 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
       - [`git merge`](#git-merge)
       - [`git rebase`](#git-rebase)
       - [Scegliere tra un `merge` e un `rebase`](#scegliere-tra-un-merge-e-un-rebase)
+      - [_Merge conflicts_](#merge-conflicts)
   - [Github](#github)
     - [Collegare una repo](#collegare-una-repo)
     - [Clonare una repo](#clonare-una-repo)
@@ -515,11 +516,106 @@ Per eliminare un branch basta eseguire il comando `git branch -D` + il nome del 
 
 ### Unire due branch
 
+Una volta che si ha lavorato per un po' su un branch a parte, l'ideale sarebbe trasferire i progressi fatti su questo branch nel `main` branch. Se l'alettone che abbiamo sviluppato in un branch a parte supera tutti i test specifici del caso e presenta un aumento di prestazione, allora è meglio inserirlo nel progetto della macchina in modo definitivo.
+
+Ecco che ci vengono incontro due funzionalità cardine di Git: il merging e il rebasing. Due comandi che fanno la stessa cosa, ovvero unire un branch con un altro, ma in modo sostanzialmente diverso.
+
 #### `git merge`
+
+Tramite `merge`, due branch vengono uniti tramite il cosiddetto _merge commit_, ovvero un commit aggiuntivo il cui scopo è quello di rendere coerenti i cambiamenti eseguiti nei due branch. Ad esempio, se a un certo istante nel tempo abbiamo creato il branch `alettone`, ma intanto nel `main` sono stati aggiunti dei commit di altre parti della macchina, che ovviamente non abbiamo nel nostro branch `alettone`, il _merge commit_ ci permetterà di conformare le modifiche comuni e non comuni dei due branch.
+
+Ovviamente, il `merge` ha il vantaggio di essere semplice da eseguire e sicuro (vedremo poi in comparazione con il `rebase`), tuttavia questo preserva la struttura ad albero della cronologia, che può effettivamente essere d'aiuto per comprendere la storia della repo, ma se si ha a che fare con centinaia di branch e migliaia di merge la situazione si complica.
+
+Per provare il `merge`, aggiungiamo una riga al file `foo.txt` nel branch `branch-1`. Alla fine, il file avrà il seguente contenuto:
+
+```text
+Apex1
+Apex2
+Apex3
+Apex4
+```
+
+Dopo aver creato il commit su `branch-1`, proviamo adesso ad eseguire il `merge` tra `branch-1` e `main`: spostiamoci nel `main` tramite il comando `git switch` (oppure utilizzando Github Desktop), e da qui eseguiamo il comando:
+
+```bash
+git merge branch-1
+```
+
+> [!NOTE]
+> Eseguendo questo merge, notiamo che Git ha praticamente fatto tutto da solo, dandoci questo output:
+>
+> ![](assets/1.35.png)
+>
+> È stato eseguito un _fast forward_, ovvero visto che il la differenza tra il `main` branch e il branch da unire consisteva solamente in commit in più da parte del secondo, Git ha semplicemente "aggiunto" questi commit al `main`, senza creare un commit in più. Se ne avesse invece avuto bisogno, ci sarebbe stato chiesto di creare un messaggio per il _merge commit_.
+
+Su Github Desktop, basta trovarsi sul branch su cui si vuole eseguire il merge ed aprire il menu **Branch** sulla barra degli strumenti e scegliere **Merge into current branch**:
+
+![](assets/1.36.png)
+
+Comparirà lo schermo seguente, in qui bisogna scegliere il branch da "mergeare" e premere **Create a merge commit**:
+
+![](assets/1.37.png)
 
 #### `git rebase`
 
+Il `rebase` invece opera in maniera diversa: supponendo di identificare con A il branch da cui vogliamo fare il rebase e con B quello su cui vogliamo fare il rebase, i commit che appartengono ad A ma non a B vengono posti davanti a tutti i commit che appartengono solo a B e non ad A.
+
+Questo permette di mantenere una cronologia lineare, quindi più pulita. Tuttavia, i commit che vengono riposizionati non sono gli stessi che esistevano nel branch A: infatti contengono gli stessi contenuti, ma sono stati essenzialmente ricreati, quindi la nostra cronologia sarà incompatibile con quella di altri rimasti a prima del `rebase`.
+
+> [!CAUTION]
+> Non eseguire mai un `rebase` con un altro branch se ci si trova sul `main`. Infatti questo causerebbe molti problemi a tutti i collaboratori della repo, che quindi avrebbero una cronologia sul main completamente diversa da quella nuova.
+
+Proviamo ad eseguire il rebase di `branch-2` su `main`: spostiamoci quindi su `branch-2` ed eseguiamo il comando:
+
+```bash
+git rebase main
+```
+
+Per eseguire un `rebase` su Github Desktop bisogna aprire il menu a tendina **Branch** e scegliere **Rebase current branch** (sempre trovandoci su `branch-2`):
+
+![](assets/1.38.png)
+
+Poi compare lo stesso menu del `merge`, in cui bisogna scegliere un altro branch e poi cliccare su **Rebase**.
+
+> [!WARNING]
+> Eseguendo lo specifico `rebase` di prima, otterremo un errore non relativo al comando in sé, ma alla nostra particolare cronologia. Vedremo questo problema nel prossimo paragrafo.
+
 #### Scegliere tra un `merge` e un `rebase`
+
+Scegliere tra `merge` e `rebase` non è sempre una scelta scontata, ma possiamo identificare delle "linee guida":
+
+- Se il branch su cui si sta lavorando è personale, ovvero se non viene utilizzato da altri collaboratori, allora il `rebase` è quasi sempre sicuro e da preferire, soprattutto se sul `main` branch non sono stati aggiunti nuovi commit da quando si è creato il branch su cui fare il `rebase`.
+- Se si vuole andare sul sicuro, perché esistono molti commit di differenza tra i due branch, allora il `merge` è l'opzione da scegliere.
+
+#### _Merge conflicts_
+
+Quando si uniscono due branch, può capitare che parti del contenuto della repo differiscano da un branch all'altro. Ovviamente, Git da solo non è capace di stabilire quale delle due versioni mantenere, oppure entrambe, quindi si hanno quelli che vengono detti _merge conflicts_, che vanno risolti a mano. Per fortuna Git ci evidenzia i file soggetti a questi conflitti, così che noi li possiamo risolvere e completare il `merge` o il `rebase`.
+
+Vedendo il file `foo.txt` vediamo che adesso il contenuto è il seguente:
+
+```text
+Apex1
+Apex2
+<<<<<<< HEAD
+Apex3
+||||||| parent of 39d3f3c (Aggiunto 'Apex4')
+=======
+>>>>>>> 39d3f3c (Aggiunto 'Apex4')
+Apex4
+```
+
+Git ci ha evidenziato il conflitto: infatti, sul `main` avevamo "Apex3", mentre su `branch-1` abbiamo "Apex4". Possiamo risolvere questo conflitto come vogliamo, tenendo solo il primo, solo il secondo, o entrambi. Nel nostro caso particolare lasceremo entrambi, quindi ci basta rimuovere le linee aggiunte da Git.
+
+Il contenuto del file sarà alla fine:
+
+```text
+Apex1
+Apex2
+Apex3
+Apex4
+```
+
+Adesso dobbiamo aggiungere il file al `rebase` con `git add foo.txt` e poi basta eseguire `git rebase --continue` per completare l'operazione. Ovviamente con il `merge` la situazione sarebbe cambiata leggermente, ma il ragionamento sarebbe lo stesso.
 
 ## Github
 
