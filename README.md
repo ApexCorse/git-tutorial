@@ -1,3 +1,5 @@
+<!-- omit from toc -->
+
 # Guida Git e Github
 
 Questa guida costituisce una reference per i reparti all'interno di Apex che utilizzano Git e Github.
@@ -20,7 +22,7 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
     - [Ispezionare la cronologia](#ispezionare-la-cronologia)
     - [Navigare nella cronologia](#navigare-nella-cronologia)
     - [Ritornare a un commit (e cancellare quelli successivi)](#ritornare-a-un-commit-e-cancellare-quelli-successivi)
-  - [Lavorare con i *branch*](#lavorare-con-i-branch)
+  - [Lavorare con i _branch_](#lavorare-con-i-branch)
     - [Come funzionano i branch](#come-funzionano-i-branch)
     - [Creare un branch](#creare-un-branch)
     - [Passare da un branch all'altro](#passare-da-un-branch-allaltro)
@@ -33,15 +35,20 @@ Questa guida costituisce una reference per i reparti all'interno di Apex che uti
       - [Scegliere tra un `merge` e un `rebase`](#scegliere-tra-un-merge-e-un-rebase)
       - [_Merge conflicts_](#merge-conflicts)
   - [Github](#github)
-    - [Collegare una repo](#collegare-una-repo)
     - [Clonare una repo](#clonare-una-repo)
+      - [Clonare tramite Terminale](#clonare-tramite-terminale)
+      - [Clonare tramite GitHub Desktop](#clonare-tramite-github-desktop)
+      - [Ottenere l'URL della repository](#ottenere-lurl-della-repository)
+      - [Cosa succede dopo il clone](#cosa-succede-dopo-il-clone)
     - [Operazioni in remoto](#operazioni-in-remoto)
       - [`git push`](#git-push)
       - [`git fetch`](#git-fetch)
       - [`git pull`](#git-pull)
+      - [Quando usare fetch vs pull](#quando-usare-fetch-vs-pull)
     - [Mantenere l'ordine](#mantenere-lordine)
       - [Divisione in più branch](#divisione-in-più-branch)
       - [Pull Requests](#pull-requests)
+
 ## Introduzione
 
 **Git** è un sistema di controllo versione distribuito open source che tiene traccia delle modifiche apportate ai file nel tempo. Consente di tornare a versioni specifiche, confrontare le modifiche, collaborare con altri e altro ancora. Permette quindi di mantenere una cronologia dei cambiamenti ai file di cui si tiene traccia e offre le basi per la collaborazione con altre persone.
@@ -102,10 +109,10 @@ Ad esempio creiamo un file chiamato `foo.txt`, scrivendo all'interno di questo f
 
 Notiamo varie cose:
 
-- Git ci dice che ci troviamo sul `main` branch.
-- Non abbiamo ancora fatto commit, la cronologia è vuota.
-- Git ha riconosciuto un file di cui non tiene ancora traccia, proprio `foo.txt`
-- Git ci consiglia di eseguire il comando `git add` per far sì che cominci a tenere traccia del nuovo file.
+-   Git ci dice che ci troviamo sul `main` branch.
+-   Non abbiamo ancora fatto commit, la cronologia è vuota.
+-   Git ha riconosciuto un file di cui non tiene ancora traccia, proprio `foo.txt`
+-   Git ci consiglia di eseguire il comando `git add` per far sì che cominci a tenere traccia del nuovo file.
 
 L'equivalente su Github Desktop sarebbe semplicemente la sezione **Changes** sulla sinistra.
 
@@ -237,13 +244,13 @@ Apex3
 
 Vediamo, sia tramite `git status` che tramite l'interfaccia di Github Desktop, che Git ha rilevato un cambiamento al file. Tramite `git restore`, o la voce **Discard Changes** di Github Desktop, possiamo ripristinare il file a com'era prima della modifica.
 
-Se invece avessimo aggiunto un file modificato o eliminato alla *staging area* (cosa possibile solamente tramite il terminale e il comando `git add`, su Github Desktop non si esegue questo comando manualmente), per ripristinare i cambiamenti non basterebbe usare `git restore`, ma una sua variante.
+Se invece avessimo aggiunto un file modificato o eliminato alla _staging area_ (cosa possibile solamente tramite il terminale e il comando `git add`, su Github Desktop non si esegue questo comando manualmente), per ripristinare i cambiamenti non basterebbe usare `git restore`, ma una sua variante.
 
-Infatti, una volta aggiunto questo file alla *staging area*, vediamo che l'output di `git status` è il seguente:
+Infatti, una volta aggiunto questo file alla _staging area_, vediamo che l'output di `git status` è il seguente:
 
 ![](assets/1.14.png)
 
-Ci dice che per togliere il file dalla *staging area* ("*unstage*") dobbiamo eseguire il comando `git restore --staged` più il percorso del file. Quindi eseguendo:
+Ci dice che per togliere il file dalla _staging area_ ("_unstage_") dobbiamo eseguire il comando `git restore --staged` più il percorso del file. Quindi eseguendo:
 
 ```bash
 git restore --staged foo.txt
@@ -253,7 +260,7 @@ l'output di `git status` sarà:
 
 ![](assets/1.15.png)
 
-Quindi ha semplicemente tolto `foo.txt` dalla *staging area*.
+Quindi ha semplicemente tolto `foo.txt` dalla _staging area_.
 
 ## Sfruttare la cronologia
 
@@ -267,10 +274,10 @@ Ad esempio, eseguendo il comando `git log` sulla repo usata fino ad ora vedremo 
 
 ovvero vedremo questa lista di commit che vanno dal più nuovo al più vecchio. Vediamo varie informazioni riguardo ogni commit:
 
-- Il tag, ovvero l'identificativo del commit. Ci servirà in seguito per navigare tra i commit.
-- L'autore del commit.
-- La data in cui è stato creato.
-- Il messaggio e in caso la descrizione del commit.
+-   Il tag, ovvero l'identificativo del commit. Ci servirà in seguito per navigare tra i commit.
+-   L'autore del commit.
+-   La data in cui è stato creato.
+-   Il messaggio e in caso la descrizione del commit.
 
 Il commit in cui ci troviamo attualmente è segnato dalla parola `HEAD`. Vedremo che potremo spostare questo indicatore dove vogliamo quando navigheremo nella cronologia.
 
@@ -278,7 +285,7 @@ Su Github Desktop il discorso è più semplice perché basta passare sulla tab *
 
 ![](assets/1.17.png)
 
-Inoltre, `git log` permette di essere eseguito con delle variazioni, con le cosiddette *flags*, ovvero delle opzioni che si possono specificare per ottenere degli output diversi. Ad esempio, si può fare in modo che `git log` mostri un grafico ad accompagnare i commit, cosa che sarà molto utile quando avremo più branch, tramite il seguente comando:
+Inoltre, `git log` permette di essere eseguito con delle variazioni, con le cosiddette _flags_, ovvero delle opzioni che si possono specificare per ottenere degli output diversi. Ad esempio, si può fare in modo che `git log` mostri un grafico ad accompagnare i commit, cosa che sarà molto utile quando avremo più branch, tramite il seguente comando:
 
 ```bash
 git log --graph
@@ -312,7 +319,7 @@ changes and commit them, and you can discard any commits you make in this
 state without impacting any branches by switching back to a branch.
 ```
 
-In pratica ci dice che possiamo fare quello che vogliamo mentre siamo in questo stato di *detached `HEAD`*, ovvero fare cambiamenti e committare, ma che una volta ritornati ad esempio all'ultimo commit del `main`, ovvero quando usciremo da questo stato, tutto il lavoro fatto non verrà salvato. Per fare in modo che questi cambiamenti vengano salvati bisogna creare un altro branch: vedremo più in avanti come fare.
+In pratica ci dice che possiamo fare quello che vogliamo mentre siamo in questo stato di _detached `HEAD`_, ovvero fare cambiamenti e committare, ma che una volta ritornati ad esempio all'ultimo commit del `main`, ovvero quando usciremo da questo stato, tutto il lavoro fatto non verrà salvato. Per fare in modo che questi cambiamenti vengano salvati bisogna creare un altro branch: vedremo più in avanti come fare.
 
 Da Github Desktop è più facile fare ciò: basta andare nella tab **History**, cliccare col tasto destro su un commit e selezionare **Checkout Commit**.
 
@@ -322,7 +329,7 @@ Da Github Desktop è più facile fare ciò: basta andare nella tab **History**, 
 
 Possiamo anche resettare la cronologia a un certo commit, ovvero far diventare quel commit il corrente e cancellare tutti quelli dopo. Il comando è `git reset`, che quindi eseguito su un commit farà puntare l'`HEAD` a quel determinato commit cancellando tutti i commit che sono stati creati dopo quello.
 
-Tuttavia non si vanno a perdere le modifiche fatte in questi commit cancellati, le quali rimarranno nella nostra cartella, al di fuori della *staging area*.
+Tuttavia non si vanno a perdere le modifiche fatte in questi commit cancellati, le quali rimarranno nella nostra cartella, al di fuori della _staging area_.
 
 Data la seguente cronologia:
 
@@ -338,7 +345,7 @@ succederà che l'ultimo commit della nostra cronologia verrà cancellato e l'`HE
 
 ![](assets/1.20.png)
 
-Vediamo infatti che manca il commit che precedentemente era l'ultimo creato. Eseguendo anche `git status`, vediamo che abbiamo le modifiche al file `foo.txt` che erano state committate nel commit ormai eliminato. 
+Vediamo infatti che manca il commit che precedentemente era l'ultimo creato. Eseguendo anche `git status`, vediamo che abbiamo le modifiche al file `foo.txt` che erano state committate nel commit ormai eliminato.
 
 (Consiglio di ricreare il commit sempre con queste modifiche).
 
@@ -346,16 +353,16 @@ La stessa cosa si può fare ovviamente da Github Desktop, cliccando col tasto de
 
 ![](assets/1.21.png)
 
-## Lavorare con i *branch*
+## Lavorare con i _branch_
 
-I *branch* sono una delle feature più importanti di Git, che permette di organizzare meglio il proprio lavoro e di facilitare la collaborazione. Idealmente una repo, soprattutto se vede lavorare più persone al suo interno, dovrebbe sempre sfruttare i branch.
+I _branch_ sono una delle feature più importanti di Git, che permette di organizzare meglio il proprio lavoro e di facilitare la collaborazione. Idealmente una repo, soprattutto se vede lavorare più persone al suo interno, dovrebbe sempre sfruttare i branch.
 
 ### Come funzionano i branch
 
 Facciamo un'esempio: abbiamo una repo che contiene file relativi a vari componenti della macchina e supponiamo di stare lavorando sull'alettone. Avendolo già sviluppato fino a un certo punto, avremo dei commit che contengono le modifiche fatte nel tempo.
 
 ![](assets/1.22.png)
-*La freccia indica il commit che è venuto prima*
+_La freccia indica il commit che è venuto prima_
 
 Supponiamo tuttavia di voler provare un approccio diverso nello sviluppo, di fare un esperimento che, per motivi ovvi, non si vuole mantenere nel `main`, siccome lì si trova la versione corrente che non si vuole perdere.
 
@@ -369,9 +376,9 @@ Succede che viene creato un vero e proprio ramo, che contiene gli stessi commit 
 
 Il nuovo commit viene creato solo nel branch `esperimento-alettone`, il `main` non viene assolutamente intaccato. Questo ha molti vantaggi:
 
-- possiamo lavorare su `esperimento-alettone` senza preoccuparci di quello che succede nel `main`;
-- possiamo tornare nel `main` quando vogliamo;
-- se nel nostro caso il lavoro eseguito sul branch alternativo è valido, si possono portare i progressi di questo nel `main`.
+-   possiamo lavorare su `esperimento-alettone` senza preoccuparci di quello che succede nel `main`;
+-   possiamo tornare nel `main` quando vogliamo;
+-   se nel nostro caso il lavoro eseguito sul branch alternativo è valido, si possono portare i progressi di questo nel `main`.
 
 ### Creare un branch
 
@@ -390,7 +397,7 @@ verrà creato un nuovo branch, ed eseguendo il comando `git log` vedremo questo:
 Ci trovavamo sull'ultimo commit del `main` branch ed è stato creato un nuovo branch `branch-1` a partire da questo commit. I due branch, `main` e `branch-1`, condividono per il momento tutti i commit.
 
 > ❗
-> 
+>
 > Da notare che non ci siamo spostati sul nuovo branch, l'`HEAD` punta ancora all'ultimo commit su cui eravamo prima, ma sempre puntando al `main` branch. Vedremo dopo come passare da un branch all'altro.
 
 Possiamo anche spostarci a un altro commit e poi creare un branch. Se volessimo creare il branch `branch-2` a partire dal penultimo commit del `main`, eseguiamo i comandi seguenti:
@@ -411,7 +418,7 @@ Il primo comando ci fa tornare indietro di un commit rispetto all'`HEAD`, un mod
 > ➕
 >
 > Una cosa che possiamo fare per rendere la cronologia più comprensibile è dire a Git di mostrare un grafico che mostri la relazione tra i vari branch, aggiungendo la flag `--graph`. L'output di `git log --all --graph` è il seguente:
-> 
+>
 > ![](assets/1.27.png)
 
 Su Github Desktop la questione si fa più semplice, in quanto per creare un branch a partire da un commit ci basta cliccare col tasto destro su un commit e poi selezionare **Create Branch from Commit**.
@@ -457,9 +464,9 @@ Su Github Desktop l'operazione è molto più semplice: infatti basta scegliere i
 > ⛔
 >
 > Quando si hanno dei cambiamenti non committati e si cambia branch, questi verranno portati nel branch in cui si sta andando, quindi bisogna fare molta attenzione a casi del genere (soprattutto se non si è consapevoli del problema).
-> 
+>
 > Per fortuna, Github Desktop ci viene incontro e in situazioni del genere ci chiede se vogliamo portare i cambiamenti con noi sul branch in cui stiamo andando oppure lasciarli nel branch dove si trovano (grazie a un'operazione che vedremo in seguito). Infatti ci viene mostrato questo dialog:
-> 
+>
 > ![](assets/1.32.png)
 >
 > che ci chiede se vogliamo tenere o portare i cambiamenti con noi.
@@ -478,8 +485,8 @@ e creiamo un nuovo commit. Adesso, l'output di `git log --all --graph` sarà il 
 
 Quello che vediamo è quindi una diramazione evidente della cronologia:
 
-- La cronologia è identica fino al secondo commit, dove il grafo è di colore verde. Questo infatti vuol dire che tutti i branch condividono quei commit.
-- Dal secondo in poi si ha una diramazione: entrambi `main` e `branch-1` possiedono un commit che `branch-2` non ha, e viceversa.
+-   La cronologia è identica fino al secondo commit, dove il grafo è di colore verde. Questo infatti vuol dire che tutti i branch condividono quei commit.
+-   Dal secondo in poi si ha una diramazione: entrambi `main` e `branch-1` possiedono un commit che `branch-2` non ha, e viceversa.
 
 > ☝️
 >
@@ -584,8 +591,8 @@ Poi compare lo stesso menu del `merge`, in cui bisogna scegliere un altro branch
 
 Scegliere tra `merge` e `rebase` non è sempre una scelta scontata, ma possiamo identificare delle "linee guida":
 
-- Se il branch su cui si sta lavorando è personale, ovvero se non viene utilizzato da altri collaboratori, allora il `rebase` è quasi sempre sicuro e da preferire, soprattutto se sul `main` branch non sono stati aggiunti nuovi commit da quando si è creato il branch su cui fare il `rebase`.
-- Se si vuole andare sul sicuro, perché esistono molti commit di differenza tra i due branch, allora il `merge` è l'opzione da scegliere.
+-   Se il branch su cui si sta lavorando è personale, ovvero se non viene utilizzato da altri collaboratori, allora il `rebase` è quasi sempre sicuro e da preferire, soprattutto se sul `main` branch non sono stati aggiunti nuovi commit da quando si è creato il branch su cui fare il `rebase`.
+-   Se si vuole andare sul sicuro, perché esistono molti commit di differenza tra i due branch, allora il `merge` è l'opzione da scegliere.
 
 #### _Merge conflicts_
 
@@ -619,17 +626,183 @@ Adesso dobbiamo aggiungere il file al `rebase` con `git add foo.txt` e poi basta
 
 ## Github
 
-### Collegare una repo
+Molti confondono Git e Github, e nonostante nel nostro workspace siano strettamente collegati, sono completamente diversi:
+
+-   Git è il software che permette di avere il versionamento dei file, di eseguire dei commit, di creare branch, ecc. Tutti i comandi che finora abbiamo imparato, e che abbiamo usato anche tramite Github Desktop, sono dati da Git.
+-   Github è una piattaforma basata su Git che permette di hostare le proprie repo online e collaborare con altri. Offre inoltre molti altri servizi.
+
+In questa sezione approfondiremo alcune funzionalità caratteristiche di Github e alcune che sono in sinergia con Git.
 
 ### Clonare una repo
 
+Clonare una repository significa scaricare una copia completa di una repository remota sul proprio computer locale. Così facendo si può cominciare a contribuire a quella stessa repository.
+
+#### Clonare tramite Terminale
+
+Il comando principale per clonare una repository è `git clone` seguito dall'URL della repository:
+
+```bash
+git clone https://github.com/username/repository-name.git
+```
+
+Questo comando:
+
+-   Scarica tutti i file della repository
+-   Crea una cartella con il nome della repository
+-   Inizializza automaticamente Git nella cartella
+-   Configura il remote origin per puntare alla repository originale
+-   Scarica tutti i branch e la cronologia completa
+
+#### Clonare tramite GitHub Desktop
+
+**Metodo 1 - Clone Repository:**
+
+1. Aprire GitHub Desktop
+2. Andare su **File > Clone Repository**
+3. Nella finestra che appare, selezionare la tab **GitHub.com**
+4. Scegliere la repository dalla lista delle proprie repository o cercarla
+5. Selezionare la directory di destinazione
+6. Cliccare su **Clone**
+
+**Metodo 2 - URL diretto:**
+
+1. Aprire GitHub Desktop
+2. Andare su **File > Clone Repository**
+3. Nella tab **URL**, incollare l'URL della repository
+4. Scegliere la directory di destinazione
+5. Cliccare su **Clone**
+
+#### Ottenere l'URL della repository
+
+Per clonare una repository, hai bisogno del suo URL. Puoi ottenerlo in diversi modi:
+
+**Da GitHub.com:**
+
+1. Navigare alla pagina della repository su GitHub
+2. Cliccare sul pulsante verde **Code**
+3. Copiare l'URL HTTPS o SSH (se configurato)
+
+**Tipi di URL:**
+
+-   **HTTPS**: `https://github.com/username/repository-name.git`
+    -   Funziona sempre, richiede username e password/token
+-   **SSH**: `git@github.com:username/repository-name.git`
+    -   Richiede configurazione delle chiavi SSH, ma più sicuro
+
+#### Cosa succede dopo il clone
+
+Dopo aver clonato una repository:
+
+**Tramite Terminale:**
+
+```bash
+# Verificare lo stato
+git status
+
+# Vedere i branch disponibili
+git branch -a
+
+# Vedere i remote configurati
+git remote -v
+```
+
+**Tramite GitHub Desktop:**
+
+-   La repository apparirà nella lista delle repository locali
+-   Sarà automaticamente selezionata e pronta per l'uso
+-   Nella sezione **History** vedrai tutti i commit della repository
+-   Nella sezione **Current Branch** vedrai il branch attivo
+
 ### Operazioni in remoto
+
+Una volta che si ha una repository locale collegata a una remota, è necessario sincronizzare le modifiche tra le due. Git fornisce tre comandi principali per gestire questa sincronizzazione: `push`, `fetch` e `pull`.
 
 #### `git push`
 
+Il comando `git push` invia i commit locali alla repository remota, aggiornando il branch remoto con le modifiche locali.
+
+```bash
+git push
+```
+
+> [!CAUTION]
+>
+> Un push forzato non è mai una buona idea se non si è consapevoli di cosa si sta facendo, soprattutto quando si sta effettuando sul `main` branch in una repository con altre persone. In questo caso, chiedere aiuto al team IT.
+
+**Tramite GitHub Desktop:**
+
+1. Dopo aver fatto un commit, apparirà il pulsante **Push origin**
+2. Cliccare su **Push origin** per inviare le modifiche
+3. Oppure usare **Repository > Push** dal menu
+
+**Cosa succede durante il push:**
+
+-   Git invia i commit locali che non esistono nel remote
+-   Aggiorna il branch remoto con i nuovi commit
+-   Se ci sono conflitti, Git bloccherà il push
+
+**Push di un nuovo branch:**
+
+```bash
+# Git ti chiederà di impostare il tracking
+git push -u origin nuovo-branch
+# Il flag -u imposta il tracking per i push futuri
+```
+
 #### `git fetch`
 
+Il comando `git fetch` scarica le modifiche dalla repository remota senza applicarle automaticamente al branch locale. È un'operazione "sicura" che non modifica il lavoro locale.
+
+```bash
+git fetch
+```
+
+**Tramite GitHub Desktop:**
+
+1. Andare su **Repository > Fetch origin**
+2. Oppure cliccare su **Fetch origin** nella barra superiore
+
+**Cosa fa fetch:**
+
+-   Scarica tutti i commit remoti
+-   Aggiorna i riferimenti remoti (origin/main, origin/develop, ecc.)
+-   **NON** modifica il branch locale corrente
+-   **NON** modifica i file nel working directory
+
 #### `git pull`
+
+Il comando `git pull` combina `fetch` + `merge`. Scarica le modifiche remote e le integra automaticamente nel branch locale corrente.
+
+```bash
+git pull
+```
+
+**Tramite GitHub Desktop:**
+
+1. Cliccare su **Pull origin** nella barra superiore
+2. Oppure usare **Repository > Pull** dal menu
+
+**Cosa succede durante il pull:**
+
+1. Git esegue un `fetch` per scaricare le modifiche remote
+2. Git esegue un `merge` per integrare le modifiche nel branch locale
+3. Se ci sono conflitti, Git li segnalerà e chiederà di risolverli
+
+#### Quando usare fetch vs pull
+
+**Usa `fetch` quando:**
+
+-   Vuoi vedere cosa è cambiato nel remote senza applicare le modifiche
+-   Vuoi controllare le modifiche prima di integrarle
+-   Stai lavorando su un branch e vuoi vedere se il main è stato aggiornato
+-   Vuoi fare un merge manuale più controllato
+
+**Usa `pull` quando:**
+
+-   Vuoi sincronizzare rapidamente il tuo branch con il remote
+-   Sei sicuro che le modifiche remote non confliggano con le tue
+-   Stai lavorando da solo su un branch
+-   Vuoi aggiornare il tuo branch locale con le ultime modifiche
 
 ### Mantenere l'ordine
 
